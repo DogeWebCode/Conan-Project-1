@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輪播圖片管理</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>上傳輪播照片</h2>
+    <form id="campaignForm" onsubmit="submitForm(event)">
+        <div class="section-header">選擇現有產品</div>
+
+        <select id="product" name="product" required>
+            <option value="">請選擇產品</option>
+        </select>
+
+        <div class="form-group">
+            <label for="story">故事:</label>
+            <textarea id="story" name="story" required></textarea>
+        </div>
+
+        <div class="section-header main-image">圖片：</div>
+        <div class="form-group">
+            <input type="file" id="picture-url" name="picture" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" id="add-campaign">新增輪播照片</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("campaignForm");
+        const formData = new FormData(form);
+
+        const productId = document.getElementById("product").value;
+        formData.append("productId", productId);
+
+        const mainImage = document.getElementById("picture-url").files[0];
+        formData.append("picture", mainImage);
+
+        fetch("/api/1.0/marketing/addCampaign", {
+            method: "POST",
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log('Success:', data);
+                    alert('操作成功!');
+                } else {
+                    throw new Error(data.message || 'Unknown error occurred');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('操作失敗：' + error.message);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const select = document.getElementById('product');
+        if (select) {
+            select.addEventListener('change', updateStory);
+        }
+
+        fetchProducts();
+    });
+
+    function fetchProducts() {
+        let allProducts = [];
+
+        function getPage(paging = 0) {
+            fetch(`/api/1.0/products/all?paging=${paging}`)
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 400) {
+                            populateSelect(allProducts);
+                            return;
+                        }
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(responseData => {
+                    if (responseData && responseData.data && Array.isArray(responseData.data)) {
+                        if (responseData.data.length > 0) {
+                            allProducts = allProducts.concat(responseData.data);
+                            getPage(paging + 1);
+                        } else {
+                            populateSelect(allProducts);
+                        }
+                    } else {
+                        console.error('Unexpected data structure:', responseData);
+                        populateSelect(allProducts);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                    populateSelect(allProducts);
+                });
+        }
+
+        getPage();
+    }
+
+    function populateSelect(products) {
+        const select = document.getElementById('product');
+        select.innerHTML = '<option value="">請選擇產品</option>';
+        products.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = product.title;
+            select.appendChild(option);
+        });
+        console.log(`${products.length} products loaded successfully`);
+    }
+
+    function updateStory() {
+        const product = document.getElementById('product').value;
+        if (product) {
+            fetch(`/api/1.0/products/details?id=${product}`)
+                .then(response => response.json())
+                .then(responseData => {
+                    if (responseData.data) {
+                        document.getElementById('story').value = responseData.data.story || '';
+                    } else {
+                        console.error('Unexpected data structure:', responseData);
+                    }
+                })
+                .catch(error => console.error('Error fetching product story:', error));
+        }
+    }
+
+</script>
+</body>
+</html>

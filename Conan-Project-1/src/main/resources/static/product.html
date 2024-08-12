@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STYLiSH 2024</title>
+    <link rel="stylesheet" href="css/product.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="STYLiSH">
+                </a>
+            </div>
+            <nav class="header-category">
+                <div class="header-category-item">
+                    <a href="index.html?category=women">女裝</a>
+                    <a href="index.html?category=men">男裝</a>
+                    <a href="index.html?category=accessories">配件</a>
+                </div>
+            </nav>
+            <div class="header-searchbar">
+                <input type="text" placeholder="">
+            </div>
+            <div class="header-icons">
+                <a href="#" class="cart-icon"></a>
+                <a href="profile.html" class="profile-icon"></a>
+            </div>
+        </div>
+    </header>
+    <main class="product-detail">
+        <div class="product-images">
+            <img id="main-image" src="" alt="Main Product Image">
+        </div>
+        <div class="product-info">
+            <h1 id="product-title"></h1>
+            <p id="product-id"></p>
+            <p id="product-price"></p>
+            <div class="product-colors">
+                <span class="color-title">顏色｜</span>
+                <div id="color-options"></div>
+            </div>
+            <div class="product-sizes">
+                <span class="size-title">尺寸｜</span>
+                <div id="size-options"></div>
+            </div>
+            <div class="product-quantity">
+                <span class="quantity-title">數量｜</span>
+                <div class="quantity-selector">
+                    <div id="decrease">-</div>
+                    <div id="quantity"></div>
+                    <div id="increase">+</div>
+                </div>
+            </div>
+            <button id="checkout" disabled>請選擇尺寸</button>
+            <div class="product-details">
+                <p id="note"></p>
+                <p id="texture"></p>
+                <p id="place"></p>
+            </div>
+        </div>
+        <section class="product-story">
+            <h2 id="product-story-title">細部說明</h2>
+            <p id="product-story-content"></p>
+        </section>
+        <section class="product-images-extra">
+            <div id="extra-images"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="information">
+                <a href="#" class="about-us">關於 Stylish</a>
+                <a href="#" class="service-term">服務條款</a>
+                <a href="#" class="privite-term">隱私政策</a>
+                <a href="#" class="contact-us">聯絡我們</a>
+                <a href="#" class="faq">FAQ</a>
+            </div>
+            <div class="social-media-icon">
+                <a class="line" href="#">
+                    <img src="images/line.png" alt="line icon" />
+                </a>
+                <a class="twitter" href="#">
+                    <img src="images/twitter.png" alt="twitter icon" />
+                </a>
+                <a class="facebook" href="#">
+                    <img src="images/facebook.png" alt="facebook icon" />
+                </a>
+            </div>
+            <p class="copy-right">© 2024. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="paymentModalLabel">付款頁面</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="lead">請輸入付款資訊！</p>
+                    <form id="paymentForm">
+                        <div class="form-group card-number-group">
+                            <label for="card-number" class="control-label"><span id="cardtype"></span>卡號</label>
+                            <div class="form-control card-number"></div>
+                        </div>
+                        <div class="form-group expiration-date-group">
+                            <label for="expiration-date" class="control-label">卡片到期日</label>
+                            <div class="form-control expiration-date" id="tappay-expiration-date"></div>
+                        </div>
+                        <div class="form-group ccv-group">
+                            <label for="ccv" class="control-label">卡片後三碼</label>
+                            <div class="form-control ccv"></div>
+                        </div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Pay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.18.0"></script>
+    <script src="javascript/product.js"></script>
+</body>
+
+</html>

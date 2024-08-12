@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品管理</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@200&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2>上傳產品</h2>
+        <form id="productForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <label for="category">類別:</label>
+                <select id="category" name="category" required>
+                    <option value="men">男裝</option>
+                    <option value="women">女裝</option>
+                    <option value="accessories">飾品</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">標題:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">描述:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">價格:</label>
+                <input type="number" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="texture">質地:</label>
+                <input type="text" id="texture" name="texture" required>
+            </div>
+            <div class="form-group">
+                <label for="wash-instructions">洗滌說明:</label>
+                <input type="text" id="wash-instructions" name="wash" required>
+            </div>
+            <div class="form-group">
+                <label for="place-of-production">生產地點:</label>
+                <input type="text" id="place-of-production" name="place" required>
+            </div>
+            <div class="form-group">
+                <label for="note">備註:</label>
+                <textarea id="note" name="note" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="story">故事:</label>
+                <textarea id="story" name="story" required></textarea>
+            </div>
+
+            <div class="section-header">庫存：</div>
+            <div id="variantsContainer">
+                <div class="variant-group add-button-container">
+                    <input type="text" id="color-name-0" name="color-name-0" placeholder="Color Name" required>
+                    <input type="text" id="color-code-0" name="color-code-0" placeholder="Color Code" required>
+                    <select id="sizeId-0" name="sizeId-0" required>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                    <input type="number" id="stock-0" name="stock-0" placeholder="Stock" required>
+                    <button type="button" class="add-button" onclick="addVariant()">繼續增加</button>
+                </div>
+            </div>
+
+            <div class="section-header main-image">主要圖片：</div>
+            <div class="form-group">
+                <input type="file" id="main-image-url" name="mainImage" required>
+            </div>
+
+            <div class="section-header">其他圖片：</div>
+            <div id="otherImagesContainer">
+                <div class="form-group add-button-container">
+                    <input type="file" id="other-image-url" name="otherImages">
+                    <button type="button" class="add-button" onclick="addOtherImage()">繼續增加圖片</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="add-product">Add Product 新增產品</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let variantIndex = 0;
+
+        function addVariant() {
+            variantIndex++;
+            const variantsContainer = document.getElementById("variantsContainer");
+
+            const newVariantDiv = document.createElement("div");
+            newVariantDiv.classList.add("variant-group");
+            newVariantDiv.innerHTML = `
+            <input type="text" id="color-name-${variantIndex}" name="color-name-${variantIndex}" placeholder="Color Name" required>
+            <input type="text" id="color-code-${variantIndex}" name="color-code-${variantIndex}" placeholder="Color Code" required>
+            <select id="sizeId-${variantIndex}" name="sizeId-${variantIndex}" required>
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+            </select>
+            <input type="number" id="stock-${variantIndex}" name="stock-${variantIndex}" placeholder="Stock" required>
+            <button type="button" class="remove-button" onclick="removeVariant(this)">移除</button>
+        `;
+
+            variantsContainer.appendChild(newVariantDiv);
+        }
+
+        function removeVariant(button) {
+            button.parentElement.remove();
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            const form = document.getElementById("productForm");
+            const formData = new FormData(form);
+
+            const variants = [];
+            document.querySelectorAll(".variant-group").forEach((group) => {
+                const colorName = group.querySelector(`[id^=color-name-]`).value;
+                const colorCode = group.querySelector(`[id^=color-code-]`).value;
+                const sizeId = group.querySelector(`[id^=sizeId-]`).value;
+                const stock = group.querySelector(`[id^=stock-]`).value;
+
+                variants.push({
+                    colorName: colorName,
+                    colorCode: colorCode,
+                    sizeId: sizeId,
+                    stock: parseInt(stock)
+                });
+            });
+
+            formData.append("variants", JSON.stringify(variants));
+
+            const mainImage = document.getElementById("main-image-url").files[0];
+            formData.append("mainImage", mainImage);
+
+            const otherImages = document.querySelectorAll("#otherImagesContainer .other-image-url");
+            otherImages.forEach((input, index) => {
+                if (input.files[0]) {
+                    formData.append(`otherImages[${index}]`, input.files[0]);
+                }
+            });
+
+            fetch("/api/1.0/products/addProduct", {
+
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                });
+
+            fetch("/api/1.0/products/addProduct", {
+
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                });
+
+
+            fetch("/api/1.0/products/addProduct", {
+
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                });
+            fetch("/api/1.0/products/addProduct", {
+
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('產品新增成功!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error);
+                });
+        }
+
+        function addOtherImage() {
+            const otherImagesContainer = document.getElementById("otherImagesContainer");
+
+            const newImageDiv = document.createElement("div");
+            newImageDiv.classList.add("form-group", "add-button-container");
+            newImageDiv.innerHTML = `
+            <input type="file" class="other-image-url" name="otherImages" required>
+            <button type="button" class="remove-button" onclick="removeImage(this)">移除圖片</button>
+        `;
+
+            otherImagesContainer.appendChild(newImageDiv);
+        }
+
+        function removeImage(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+
+</html>

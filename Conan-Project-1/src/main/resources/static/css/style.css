@@ -1,0 +1,156 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  font-family: "Noto Sans TC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+#product {
+  appearance: none;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  color: #495057;
+  font-size: 1rem;
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+#product:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#product:hover {
+  border-color: #80bdff;
+}
+
+.container {
+  width: 80%;
+  max-width: 1000px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  border: 2px solid #ccc;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+#product-id,
+#category,
+#title,
+#price,
+#texture,
+#wash-instructions,
+#place-of-production,
+#color-name,
+#color-code,
+#size,
+#variant-color-code,
+#variant-size,
+#variant-price,
+#main-image-url,
+#other-image-url {
+  border-radius: 5px;
+}
+
+textarea {
+  height: 120px;
+  border-radius: 5px;
+}
+
+.button-group {
+  text-align: right;
+}
+
+button {
+  background-color: #f88379;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f6546a;
+}
+
+.section-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#color-code {
+  margin: 12px 0px;
+}
+
+#size {
+  margin-bottom: 12px;
+}
+
+#main-image-url {
+  margin-bottom: 12px;
+}
+
+#other-image-url {
+  margin-bottom: 12px;
+}
+
+.variant-group {
+  display: flex;
+  align-items: center;
+}
+
+.variant-group input {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.main-image {
+  margin-top: 12px;
+}
+
+.add-button {
+  margin: 10px 0px;
+}
+
+.form-group.add-button-container {
+  text-align: left;
+  margin-top: -10px;
+}
